@@ -1,0 +1,84 @@
+W�# coding:utf-8
+# This is a full-line comment
+key = "value"  # This is a comment at the end of a line
+another = "# This is not a comment"
+
+key = "value"
+bare_key = "value"
+bare-key = "value"
+1234 = "value"
+
+"127.0.0.1" = "value"
+"character encoding" = "value"
+"ʎǝʞ" = "value"
+'key2' = "value"
+'quoted "value"' = "value"
+
+fruit.name = "banana"     # this is best practice
+fruit. color = "yellow"    # same as fruit.color
+fruit . flavor = "banana"   # same as fruit.flavor
+
+name = "Orange"
+physical.color = "orange"
+physical.shape = "round"
+site."google.com" = true
+
+str = "I'm a string. \"You can quote me\". Name\tJos\u00E9\nLocation\tSF."
+
+str1 = """
+Roses are red
+Violets are blue"""
+
+# The following strings are byte-for-byte equivalent:
+str1 = "The quick brown fox jumps over the lazy dog."
+str2 = """
+The quick brown \
+
+
+  fox jumps over \
+    the lazy dog."""
+str3 = """\
+       The quick brown \
+       fox jumps over \
+       the lazy dog.\
+       """
+
+str4 = """Here are two quotation marks: "". Simple enough."""
+# str5 = """Here are three quotation marks: """."""  # INVALID
+str5 = """Here are three quotation marks: ""\"."""
+str6 = """Here are fifteen quotation marks: ""\"""\"""\"""\"""\"."""
+# "This," she said, "is just a pointless statement."
+str7 = """"This," she said, "is just a pointless statement.""""
+
+# What you see is what you get.
+winpath  = 'C:\Users\nodejs\templates'
+winpath2 = '\\ServerX\admin$\system32\'
+quoted   = 'Tom "Dubs" Preston-Werner'
+regex    = '<\i\c*\s*>'
+
+regex2 = '''I [dw]on't need \d{2} apples'''
+lines  = '''
+The first newline is
+trimmed in raw strings.
+   All other whitespace
+   is preserved.
+'''
+
+quot15 = '''Here are fifteen quotation marks: """""""""""""""'''
+# 'That,' she said, 'is still pointless.'
+str = ''''That,' she said, 'is still pointless.''''
+
+int1 = +99
+int2 = 42
+int3 = 0
+int4 = -17
+
+int5 = 1_000
+int6 = 5_349_221
+int7 = 53_49_221  # Indian number system grouping
+int8 = 1_2_3_4_5  # VALID but discouraged
+
+# hexadecimal with prefix `0x`
+hex1 = 0xDEADBEEF
+hex2 = 0xdeadbeef
+hex3 = 

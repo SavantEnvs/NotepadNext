@@ -1,0 +1,128 @@
+ÿ?# -*- coding: utf-8 -*-
+#--------------------------------------------------------------------------
+# perl-test-5220delta.pl
+#--------------------------------------------------------------------------
+# REF: https://metacpan.org/pod/distribution/perl/pod/perldelta.pod
+# maybe future ref: https://metacpan.org/pod/distribution/perl/pod/perl5220delta.pod
+# also: http://perltricks.com/article/165/2015/4/10/A-preview-of-Perl-5-22
+#
+#--------------------------------------------------------------------------
+# Kein-Hong Man <keinhong@gmail.com> Public Domain 20151217
+#--------------------------------------------------------------------------
+# 20151217	initial document
+# 20151218	updated tests and comments
+#--------------------------------------------------------------------------
+
+use v5.22;			# may be needed
+
+#--------------------------------------------------------------------------
+# New bitwise operators
+#--------------------------------------------------------------------------
+
+use feature 'bitwise'		# enable feature, warning enabled
+use experimental "bitwise";	# enable feature, warning disabled
+
+# numerical operands
+10&20  10|20   10^20 ~10
+$a&"8" $a|"8" $a^"8" ~$a ~"8"
+
+# string operands
+'0'&."8" '0'|."8" '0'^."8" ~.'0' ~."8"
+# the following is AMBIGUOUS, perl sees 10 and not .10 only when bitwise feature is enabled
+# so it's feature-setting-dependent, no plans to change current behaviour
+ $a&.10   $a|.10   $a^.10  ~.$a  ~.10
+
+# assignment variants
+$a&=10;    $a|=10;    $a^=10;
+$b&.='20'; $b|.='20'; $b^.='20';
+$c&="30";  $c|="30";  $c^="30";
+$d&.=$e;   $d|.=$e;   $d^.=$e;
+
+#--------------------------------------------------------------------------
+# New double-diamond operator
+#--------------------------------------------------------------------------
+# <<>> is like <> but each element of @ARGV will be treated as an actual file name
+
+# example snippet from brian d foy's blog post
+while( <<>> ) {  # new, safe line input operator
+	...;
+	}
+
+#--------------------------------------------------------------------------
+# New \b boundaries in regular expressions
+#--------------------------------------------------------------------------
+
+qr/\b{gcb}/
+qr/\b{wb}/
+qr/\b{sb}/
+
+#--------------------------------------------------------------------------
+# Non-Capturing Regular Expression Flag
+#--------------------------------------------------------------------------
+# disables capturing and filling in $1, $2, etc
+
+"hello" =~ /(hi|hello)/n; # $1 is not set
+
+#--------------------------------------------------------------------------
+# Aliasing via reference
+#--------------------------------------------------------------------------
+# Variables and subroutines can now be aliased by assigning to a reference
+
+\$c = \$d;
+\&x = \&y;
+
+# Aliasing can also be applied to foreach iterator variables
+
+foreach \%hash (@array_of_hash_refs) { ... }
+
+# example snippet from brian d foy's blog post
+
+use feature qw(refaliasing);
+
+\%other_hash = \%hash;
+
+use v5.22;
+use feature qw(refaliasing);
+
+foreach \my %hash ( @array_of_hashes ) { # named hash control variable
+	foreach my $key ( keys %hash ) { # named hash now!
+		...;
+		}
+	}
+
+#--------------------------------------------------------------------------
+# New :const subroutine attribute
+#--------------------------------------------------------------------------
+
+my $x = 54321;
+*INLINED = sub : const { $x };
+$x++;
+
+# more examples of attributes
+# (not 5.22 stuff, but some general examples for study, useful for
+#  handling subroutine signature and subroutine prototype highlighting)
+
+sub foo : lvalue ;
+
+package X;
+sub Y::x : lvalue { 1 }
+
+package X;
+sub foo { 1 }
+package Y;
+BEGIN { *bar = \&X::foo; }
+package Z;
+sub Y::bar : lvalue ;
+
+# built-in attributes for subroutines:
+lvalue method prototype(..) locked const
+
+#--------------------------------------------------------------------------
+# Repetition in list assignment
+#--------------------------------------------------------------------------
+
+# example snippet from brian d foy's blog post
+use v5.22;
+my(undef, $card_num, (undef)x3, $count) = split /:/;
+
+(

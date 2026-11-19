@@ -1,0 +1,51 @@
+ü„# -*- coding: utf-8 -*-
+#--------------------------------------------------------------------------
+# perl-test-5220delta.pl
+#--------------------------------------------------------------------------
+# REF: https://metacpan.org/pod/distribution/perl/pod/perldelta.pod
+# maybe future ref: https://metacpan.org/pod/distribution/perl/pod/perl5220delta.pod
+# also: http://perltricks.com/article/165/2015/4/10/A-preview-of-Perl-5-22
+#
+#--------------------------------------------------------------------------
+# Kein-Hong Man <keinhong@gmail.com> Public Domain 20151217
+#--------------------------------------------------------------------------
+# 20151217	initial document
+# 20151218	updated tests and comments
+#--------------------------------------------------------------------------
+
+use v5.22;			# may be needed
+
+#--------------------------------------------------------------------------
+# New bitwise operators
+#--------------------------------------------------------------------------
+
+use feature 'bitwise'		# enable feature, warning enabled
+use experimental "bitwise";	# enable feature, warning disabled
+
+# numerical operands
+10&20  10|20   10^20 ~10
+$a&"8" $a|"8" $a^"8" ~$a ~"8"
+
+# string operands
+'0'&."8" '0'|."8" '0'^."8" ~.'0' ~."8"
+# the following is AMBIGUOUS, perl sees 10 and not .10 only when bitwise feature is enabled
+# so it's feature-setting-dependent, no plans to change current behaviour
+ $a&.10   $a|.10   $a^.10  ~.$a  ~.10
+
+# assignment variants
+$a&=10;    $a|=10;    $a^=10;
+$b&.='20'; $b|.='20'; $b^.='20';
+$c&="30";  $c|="30";  $c^="30";
+$d&.=$e;   $d|.=$e;   $d^.=$e;
+
+#--------------------------------------------------------------------------
+# New double-diamond operator
+#--------------------------------------------------------------------------
+# <<>> is like <> but each element of @ARGV will be treated as an actual file name
+
+# example snippet from brian d foy's blog post
+while( <<>> ) {  # new, safe line input operator
+	...;
+	}
+
+#-------------------------------------------------------------------------

@@ -1,0 +1,143 @@
+î„# coding:utf-8
+
+1 + 2
+
+let
+ x = 1;
+ y = 2;
+in x + y
+
+let x=1;y=2;in x+y
+
+{
+  string = "hello";
+  integer = 1;
+  float = 3.141;
+  bool = true;
+  null = null;
+  list = [ 1 "two" false ];
+  attribute-set = {
+    a = "hello";
+    b = 2;
+    c = 2.718;
+    d = false;
+  }; # comments are supported
+}
+
+rec {
+  one = 1;
+  two = one + 1;
+  three = two + 1;
+}
+
+{ one = 1; three = 3; two = 2; }
+
+let
+  a = 1;
+in
+a + a
+
+let
+  b = a + 1;
+  a = 1;
+in
+a + b
+
+{
+  a = let x = 1; in x;
+  b = x;
+}
+
+let
+  attrset = { x = 1; };
+in
+attrset.x
+
+let
+  attrset = { a = { b = { c = 1; }; }; };
+in
+attrset.a.b.c
+
+{ a.b.c = 1; }
+
+let
+  a = {
+    x = 1;
+    y = 2;
+    z = 3;
+  };
+in
+with a; [ x y z ]
+
+let
+  x = 1;
+  y = 2;
+in
+{
+  inherit x y;
+}
+
+let
+  a = { x = 1; y = 2; };
+in
+{
+  inherit (a) x y;
+}
+
+let
+  inherit ({ x = 1; y = 2; }) x y;
+in [ x y ]
+
+let
+  name = "Nix${}";
+in
+"hello ${name}"
+
+graphviz = (import ../tools/graphics/graphviz) {
+  inherit fetchurl stdenv libpng libjpeg expat x11 yacc;
+  inherit (xorg) libXaw;
+};
+
+let negate = x: !x;
+    concat = x: y: x + y;
+in if negate true then concat "foo" "bar" else ""
+
+# A number
+# Equals 1 + 1
+# asd
+
+/* /*
+Block comments
+can span multiple lines.
+*/ "hello"
+"hello"
+
+/* /* nope */ 1
+
+map (concat "foo") [ "bar" "bla" "abc" ]
+
+{ localServer ? false
+, httpServer ? false
+, sslSupport ? false
+, pythonBindings ? false
+, javaSwigBindings ? false
+, javahlBindings ? false
+, stdenv, fetchurl
+, openssl ? null, httpd ? null, db4 ? null, expat, swig ? null, j2sdk ? null
+}:
+
+assert localServer -> db4 != null;
+assert httpServer -> httpd != null && httpd.expat == expat;
+assert sslSupport -> openssl != null && (httpServer -> httpd.openssl == openssl);
+assert pythonBindings -> swig != null && swig.pythonSupport;
+assert javaSwigBindings -> swig != null && swig.javaSupport;
+assert javahlBindings -> j2sdk != null;
+
+stdenv.mkDerivation {
+  name = "subversion-1.1.1";
+  openssl = if sslSupport then openssl else null;
+}
+
+configureFlags = ''
+  -system-zlib -system-libpng -system-libjpeg
+  ${if openglSupport then ''-dlopen-

@@ -1,0 +1,9 @@
+project: savantenvs/NotepadNext
+target: fuzz_regex_search
+testsuite:
+  - https://$MAYHEM_DOMAIN/$MAYHEM_PROJECT/$MAYHEM_TARGET/testsuite.tar
+  - file://mayhem/fuzz_regex_search/testsuite
+cmds:
+  - cmd: /mayhem/build-mayhem/fuzz_regex_search
+    libfuzzer: true
+    timeout: 10
